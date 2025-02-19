@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org" th:replace="~{base::Layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="container p-5 mt-3">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card card-sh">
+                    <div class="card-header text-center fs-4">Add Product</div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label>Enter Title</label> <input type="text" name="title" class="form-control"></div>
+                            <div class="mb-3">
+                                <label>Enter Description</label> <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label>Category</label>
+                                <select class="form-control">
+                                    <option>--Select--</option>
+                                    <option>Electronics</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label>Enter Price</label><input class="form-control" type="number" name="" id="">
+                            </div>
+                            <div class="row">
+                                <div class="col md-3">
+                                    <label>Enter Stock</label><input class="form-control" type="number" name="" id="">
+                                </div>
+                                <div class="col md-3"><label for="">Upload Image</label><input class="form-control" type="file" name="">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary col-md-12">Submit</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
