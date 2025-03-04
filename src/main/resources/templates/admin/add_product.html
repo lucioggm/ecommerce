@@ -22,7 +22,7 @@
                                 <label>Category</label>
                                 <select class="form-control">
                                     <option>--Select--</option>
-                                    <option>Electronics</option>
+                                    <option th:each="cat,c :${categories}">[[${cat.name}]]</option>
                                 </select>
                             </div>
                             <div class="mb-3">
