@@ -2,7 +2,9 @@ package lucioggm.ecomerce.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lucioggm.ecomerce.model.Category;
+import lucioggm.ecomerce.model.Product;
 import lucioggm.ecomerce.service.CategoryService;
+import lucioggm.ecomerce.service.ProductService;
 import org.aspectj.apache.bcel.util.ClassPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -28,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/")
     public String index() {
@@ -133,10 +138,48 @@ public class AdminController {
         } else {
             session.setAttribute("errorMsg", "something wrong on server");
         }
-
-
         return "redirect:/admin/loadEditCategory/" + category.getId();
-
-
     }
+
+    @PostMapping("/saveProduct")
+    public String saveProduct(@ModelAttribute Product product,@RequestParam("file") MultipartFile image,HttpSession session) throws IOException {
+        String imageName = image.isEmpty() ? "default.jpg" :  image.getOriginalFilename();
+        product.setImageName(imageName);
+        Product saveProduct = productService.saveProduct(product);
+        if(!ObjectUtils.isEmpty(saveProduct))
+        {
+            File saveFile = new ClassPathResource("/static/img").getFile();
+            Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator + image.getOriginalFilename());
+            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+            session.setAttribute("succMsg","Product saved successfully");
+        }
+        else {
+            session.setAttribute("errorMsg","Something wrong on server");
+        }
+        return  "redirect:/admin/loadAddProduct";
+    }
+
+    @GetMapping("/products")
+    public String loadViewProduct(Model m)
+    {
+        List<Product> products = productService.getAllProducts();
+        m.addAttribute("products",products);
+        return "admin/products";
+    }
+    @GetMapping("/deleteProduct/{id}")
+    public String deleteProduct(@PathVariable("id") int id,HttpSession session)
+    {
+        Boolean deleteProduct = productService.deleteProduct(id);
+        if(deleteProduct)
+        {
+            session.setAttribute("succMsg","deleted successfully");
+        }
+        else
+        {
+            session.setAttribute("errorMsg","something wrong")   ;
+        }
+        return "redirect:/admin/products";
+    }
+
 }
